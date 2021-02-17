@@ -36,10 +36,10 @@ feature {NONE} -- Initialization
 			bring_to_front (name_label)
 			node_figure.set_radius1 (figure_size)
 			node_figure.set_radius2 (figure_size // 2)
+			node_figure.set_background_color (color)
 			disable_scaling
 			disable_rotating
 			set_center
-
 		end
 
 feature -- Access
@@ -61,12 +61,13 @@ feature -- Element change
 			is_update_required := False
 		end
 
-	set_color(col: EV_COLOR)
+	set_color (col: EV_COLOR)
 		do
 			color := col
+			node_figure.set_background_color (col)
 		end
 
-	set_size(sz: INTEGER)
+	set_size (sz: INTEGER)
 		do
 			fig_size := sz
 		end
