@@ -362,7 +362,7 @@ feature -- Event
 		do
 			if attached tree_service.next_on_dfs as node then
 				if attached {ELLIPSE_NODE} world.figure_from_model (node) as fig then
-					fig.set_color (create {EV_COLOR}.make_with_rgb (.1, .1, .1))
+					fig.set_color (create {EV_COLOR}.make_with_rgb (.5, .5, 1))
 					print (fig.color.blue)
 					fig.set_size (50)
 					fig.set_point_position_relative (1, 1)
