@@ -231,8 +231,7 @@ feature {NONE} -- ToolBar Implementation
 			run := new_toolbar_item ("Run", "new.png")
 			run.set_text ("Run")
 			standard_toolbar.extend (run)
-				--			next.select_actions.extend (agent tree_service.add_random_nodes(2))
-				--			next.select_actions.extend (agent update_layout)
+			run.select_actions.extend (agent on_run)
 
 		ensure
 			toolbar_initialized: not standard_toolbar.is_empty
@@ -354,21 +353,32 @@ feature -- Event
 			root: EG_NODE
 		do
 			root := tree_service.new_world_tree
+			is_algo_finished := False
 			create tree_layout.make_with_world_and_root (world, root)
 			update_layout
 		end
 
 	on_next
+		local
+			res: INTEGER
 		do
 			if attached tree_service.next_on_dfs as node then
 				if attached {ELLIPSE_NODE} world.figure_from_model (node) as fig then
 					fig.set_color (create {EV_COLOR}.make_with_rgb (.5, .5, 1))
-					print (fig.color.blue)
-					fig.set_size (50)
-					fig.set_point_position_relative (1, 1)
-					fig.update
 					update_layout
+					res := 1
 				end
+			end
+			is_algo_finished := res = 0
+		end
+
+	on_run
+		local
+			task: separate BACKGROUND_TASK
+		do
+			create task.make(Current)
+			separate task as t do
+				t.do_separately
 			end
 		end
 
@@ -402,5 +412,8 @@ feature {NONE} -- World Implementation
 	model_cell: WORLD_CELL --EV_MODEL_WORLD_CELL
 
 	tree_layout: EG_TREE_LAYOUT
+
+feature
+	is_algo_finished: BOOLEAN
 
 end

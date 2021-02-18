@@ -131,6 +131,7 @@ feature
 
 			Result := root
 
+			dfs_stack.wipe_out
 			dfs(root)
 			dfs_stack.move (1)
 
@@ -149,10 +150,13 @@ feature
 			end
 		end
 
-	next_on_dfs: EG_NODE
+	next_on_dfs: detachable EG_NODE
 		do
-			Result := dfs_stack.item
-			dfs_stack.forth
+
+			if not dfs_stack.after then
+				Result := dfs_stack.item
+				dfs_stack.forth
+			end
 		end
 
 	random: RANGED_RANDOM
